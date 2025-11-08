@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+devices=$(lsblk -P -o NAME,RM,MOUNTPOINT,MODEL | \
+    awk -F' ' '
+        $2 ~ /RM="1"/ && $3 ~ /MOUNTPOINT="\/media|\/run\/media/ && $3 !~ /MOUNTPOINT=""/ {
+            # Build a display line: /dev/sdX (Model) [mountpoint]
+            for(i=1;i<=NF;i++) {
+                if($i ~ /^NAME=/) { gsub(/NAME="|"$/, "", $i); name=$i }
+                if($i ~ /^MODEL=/) { gsub(/MODEL="|"$/, "", $i); model=$i }
+                if($i ~ /^MOUNTPOINT=/) { gsub(/MOUNTPOINT="|"$/, "", $i); mp=$i }
+            }
+            print "/dev/" name " (" model ") [" mp "]"
+        }
+    ')
+
+[ -z "$devices" ] && notify-send -a Select_unmount "No external devices found." && exit 1
+
+selection=$(echo "$devices" | dmenu-wl)
+
+[ -z "$selection" ] && exit 0
+
+dev=$(echo "$selection" | awk '{print $1}')
+
+umount "$dev" || notify-send -a Select_unmount "Failed to unmount $dev."
