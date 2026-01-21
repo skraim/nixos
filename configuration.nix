@@ -192,6 +192,20 @@ in
           '')
         ];
       };
+      extraConfig.pipewire = {
+        "10-block-agc" = {
+          "pulse.rules" = [
+            {
+              matches = [
+                { "application.process.binary" = "~.*"; }
+              ];
+              actions = {
+                quirks = [ "block-source-volume" ];
+              };
+            }
+          ];
+        };
+      };
     };
   };
 
@@ -274,14 +288,30 @@ in
     rtkit.enable = true;
     polkit.enable = true;
     pam.services = {
-      login.enableGnomeKeyring = true;
-      "sddm".gnupg = {
-        enable = true;
-        storeOnly = true;
+      sddm = {
+        gnupg = {
+          enable = true;
+          storeOnly = true;
+        };
+        enableGnomeKeyring = true;
       };
-      "login".gnupg = {
-        enable = true;
-        storeOnly = true;
+      sddm-greeter = {
+        gnupg = {
+          enable = true;
+          storeOnly = true;
+        };
+        enableGnomeKeyring = true;
+      };
+      login = {
+        gnupg = {
+          enable = true;
+          storeOnly = true;
+        };
+        failDelay = {
+          enable = true;
+          delay = 1000000;
+        };
+        enableGnomeKeyring = true;
       };
     };
   };

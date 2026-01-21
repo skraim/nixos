@@ -57,6 +57,7 @@
       enable = true;
       package = pkgs.ungoogled-chromium;
       commandLineArgs = [
+        "--password-store=gnome-libsecret"
         "--enable-features=MiddleClickAutoscroll"
         "--extension-mime-request-handling=always-prompt-for-install"
         "--webrtc-ip-handling-policy=default_public_interface_only"
@@ -136,6 +137,7 @@
       cliphist
       maven
       playerctl
+      loupe
       orca-slicer
     ];
   };
@@ -149,6 +151,10 @@
       "x-scheme-handler/https" = "librewolf.desktop";
       "x-scheme-handler/about" = "librewolf.desktop";
       "x-scheme-handler/unknown" = "librewolf.desktop";
+      "image/png" = "org.gnome.Loupe.desktop";
+      "image/gif" = "org.gnome.Loupe.desktop";
+      "image/jpeg" = "org.gnome.Loupe.desktop";
+      "image/jpg" = "org.gnome.Loupe.desktop";
     };
   };
 
