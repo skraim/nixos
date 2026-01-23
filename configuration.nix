@@ -328,4 +328,9 @@ in
     };
     path = [pkgs.iproute2 pkgs.kmod];
   };
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    pkgs.nodejs_20
+  ];
 }
