@@ -17,5 +17,10 @@ vim.cmd [[
     highlight BlinkCmpDocSeparator guibg=NONE guifg=#82AAFF
     highlight BlinkCmpSignatureHelpBorder guibg=NONE guifg=#82AAFF
     highlight LspInlayHint ctermfg=NONE guifg=#7C8F8F gui=italic
+    highlight DapBreakpoint guifg=#e06c75
+    highlight DapBreakpointCondition guifg=#e5c07b
+    highlight DapBreakpointRejected guifg=#e06c75
+    highlight DapStopped guifg=#61afef guibg=#1f2d1f
+    highlight DapStoppedLine guibg=#1f2d1f
 ]]
 

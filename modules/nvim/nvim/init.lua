@@ -13,4 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("remap")
 require("set")
-require("lazy").setup("plugins")
+require("lazy").setup("plugins", {
+  lockfile = vim.env.NIXOS_FLAKE_PATH .. "/modules/nvim/nvim/lazy-lock.json",
+})

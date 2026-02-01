@@ -90,9 +90,9 @@ local config = {
 }
 
 -- local dap = require('dap')
-
+--
 -- dap.configurations.java = dap.configurations.java or {}
-
+--
 -- table.insert(dap.configurations.java, {
 --   type = "java",
 --   request = "attach",
@@ -114,26 +114,6 @@ config["on_attach"] = function(client, bufnr)
   end
   map("n", "<leader>tm", jdtls.test_nearest_method, "Test Method")
   map("n", "<leader>tc", jdtls.test_class, "Test Class")
-  map('n', '<Leader>b', function()
-    require('dap').toggle_breakpoint()
-  end, "Breakpoint")
-  map('n', '<Leader>de', function()
-    require('dap').toggle_repl()
-  end, "Breakpoint")
-  map({ 'n', 'v' }, '<Leader>dh', function()
-    require('dap.ui.widgets').hover()
-  end, "Debug Hover")
-  map({ 'n', 'v' }, '<Leader>dp', function()
-    require('dap.ui.widgets').preview()
-  end, "Debug Preview")
-  map('n', '<Leader>df', function()
-    local widgets = require('dap.ui.widgets')
-    widgets.centered_float(widgets.frames)
-  end, "Debug Frames")
-  map('n', '<Leader>ds', function()
-    local widgets = require('dap.ui.widgets')
-    widgets.centered_float(widgets.scopes)
-  end, "Debug Scopes")
 end
 
 require('jdtls').start_or_attach(config)

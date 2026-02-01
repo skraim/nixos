@@ -27,6 +27,8 @@ in
     config = {
       allowUnfree = true;
       permittedInsecurePackages = [
+        "librewolf-bin-146.0.1-1"
+        "librewolf-bin-unwrapped-146.0.1-1"
         "openssl-1.1.1w"
       ];
     };
@@ -60,8 +62,18 @@ in
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
       download-buffer-size = 500000000;
+        substituters = [
+          "https://cache.nixos.org"
+        ];
+
+        trusted-public-keys = [
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        ];
+
     };
   };
+
+  environment.variables.NIXOS_FLAKE_PATH = builtins.getEnv "PWD";
 
   virtualisation = {
     libvirtd.enable = true;
@@ -90,6 +102,7 @@ in
     hyprland.enable = true;
     wl-clipboard-master.enable = true;
     thunar.enable = true;
+    niri.enable = true;
     npm = {
       enable = true;
       package = pkgs.nodejs_20;
@@ -269,11 +282,12 @@ in
       git
       udiskie
       imagemagick
-      gnome-keyring
+      # gnome-keyring
       cargo
       libnotify
       networkmanagerapplet
       sddm-astronaut
+      cachix
       kitty
       ripgrep
       fd

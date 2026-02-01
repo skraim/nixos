@@ -14,6 +14,7 @@
     ../tmux
     ../lazygit
     ../pywal
+    ../kanshi
   ];
 
   gtk = {
@@ -45,6 +46,7 @@
     };
 
     librewolf = {
+      package = pkgs.librewolf-bin;
       enable = true;
       settings = {
         "middlemouse.paste" = false;
@@ -90,6 +92,7 @@
   home = {
     sessionVariables = {
       ANTHROPIC_API_KEY = builtins.readFile config.sops.secrets.anthropic_api_key.path;
+      GNOME_KEYRING_CONTROL = "$XDG_RUNTIME_DIR/keyring";
     };
     sessionVariablesExtra = ''
       export PATH="$HOME/scripts:$HOME/.npm-global/bin:$PATH"
@@ -100,6 +103,7 @@
         source = ../../scripts;
         recursive = true;
       };
+      ".local/share/icons/custom".source = ../../icons;
     };
     stateVersion = "25.05";
     packages = with pkgs; [
@@ -107,6 +111,7 @@
       freecad
       tldr
       zapzap
+      swaybg
       teams-for-linux
       bc
       nerd-fonts.meslo-lg
@@ -121,10 +126,11 @@
       rofi
       telegram-desktop
       slack
+      xwayland-satellite
       bibata-cursors
-      lazygit
       slurp
       libreoffice
+      inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.awww
       (import ../chromium-profiles/general.nix { inherit pkgs; })
       (import ../chromium-profiles/dl.nix { inherit pkgs; })
       grim
@@ -142,19 +148,49 @@
     ];
   };
 
-  xdg.mimeApps = {
-    enable = true;
+  xdg = {
+    mimeApps = {
+      enable = true;
 
-    defaultApplications = {
-      "text/html" = "librewolf.desktop";
-      "x-scheme-handler/http" = "librewolf.desktop";
-      "x-scheme-handler/https" = "librewolf.desktop";
-      "x-scheme-handler/about" = "librewolf.desktop";
-      "x-scheme-handler/unknown" = "librewolf.desktop";
-      "image/png" = "org.gnome.Loupe.desktop";
-      "image/gif" = "org.gnome.Loupe.desktop";
-      "image/jpeg" = "org.gnome.Loupe.desktop";
-      "image/jpg" = "org.gnome.Loupe.desktop";
+      defaultApplications = {
+        "text/html" = "librewolf.desktop";
+        "x-scheme-handler/http" = "librewolf.desktop";
+        "x-scheme-handler/https" = "librewolf.desktop";
+        "x-scheme-handler/about" = "librewolf.desktop";
+        "x-scheme-handler/unknown" = "librewolf.desktop";
+        "image/png" = "org.gnome.Loupe.desktop";
+        "image/gif" = "org.gnome.Loupe.desktop";
+        "image/jpeg" = "org.gnome.Loupe.desktop";
+        "image/jpg" = "org.gnome.Loupe.desktop";
+      };
+    };
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-gnome
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
+      ];
+      config = {
+        common = {
+          default = [ "gtk" ];
+        };
+        hyprland = {
+          default = [
+            "hyprland"
+          ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+        };
+        niri = {
+          default = [
+            "gtk"
+            "gnome"
+          ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+        };
+      };
     };
   };
 
