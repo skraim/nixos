@@ -67,20 +67,16 @@ local config = {
       },
       format = {
         enabled = true,
+        settings = {
+          url = "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+          profile = "GoogleStyle",
+        },
       },
-      runtimes = {
-        {
-          name = "JavaSE-8",
-          path = "/usr/lib/jvm/java-8-openjdk/",
+      sources = {
+        organizeImports = {
+          starThreshold = 9999,
+          staticStarThreshold = 9999,
         },
-        {
-          name = "JavaSE-11",
-          path = "/usr/lib/jvm/java-11-openjdk/",
-        },
-        {
-          name = "JavaSE-21",
-          path = "/usr/lib/jvm/java-21-openjdk/",
-        }
       },
     },
   },
@@ -88,18 +84,6 @@ local config = {
     bundles = bundles,
   },
 }
-
--- local dap = require('dap')
---
--- dap.configurations.java = dap.configurations.java or {}
---
--- table.insert(dap.configurations.java, {
---   type = "java",
---   request = "attach",
---   name = "Debug (Attach) - Remote",
---   hostName = "127.0.0.1",
---   port = 14502,
--- })
 
 config["on_attach"] = function(client, bufnr)
   local _, _ = pcall(vim.lsp.codelens.refresh)

@@ -1,6 +1,3 @@
-vim.keymap.set("n", "<leader>do", vim.cmd.DiffviewOpen, { noremap = true, silent = true, desc = 'Open Diffview' })
-vim.keymap.set("n", "<leader>dc", vim.cmd.DiffviewClose, { noremap = true, silent = true, desc = 'Close Diffview' })
-
 require('gitsigns').setup({
     on_attach = function(bufnr)
         local function map(mode, lhs, rhs, opts)
@@ -14,7 +11,6 @@ require('gitsigns').setup({
         map('v', '<leader>hr', ':Gitsigns reset_hunk<CR>')
         map('n', '<leader>hu', ':Gitsigns undo_stage_hunk<CR>')
         map('n', '<leader>hp', ':Gitsigns preview_hunk<CR>')
-        -- map('n', '<leader>hd', ':Gitsigns diffthis<CR>')
         map('n', '<leader>gb', ':Gitsigns blame<CR>')
     end
 })
@@ -160,27 +156,6 @@ require("diffview").setup({
     },
 })
 
-vim.api.nvim_create_user_command("GStatusFloat", function()
-  -- Create a new scratch buffer
-  local buf = vim.api.nvim_create_buf(false, true)
-
-  -- Define window size and position
-  local width = math.floor(vim.o.columns * 0.8)
-  local height = math.floor(vim.o.lines * 0.8)
-  local col = math.floor((vim.o.columns - width) / 2)
-  local row = math.floor((vim.o.lines - height) / 2)
-
-  -- Open floating window with buffer
-  local win = vim.api.nvim_open_win(buf, true, {
-    relative = 'editor',
-    width = width,
-    height = height,
-    col = col,
-    row = row,
-    style = 'minimal',
-    border = 'rounded'
-  })
-
-  -- Run :Gstatus in this buffer
-  vim.cmd("Git")
-end, {})
+vim.keymap.set("n", "<leader>do", vim.cmd.DiffviewOpen, { noremap = true, silent = true, desc = '[D]iffview [O]pen' })
+vim.keymap.set("n", "<leader>dc", vim.cmd.DiffviewClose, { noremap = true, silent = true, desc = '[D]iffview [C]lose' })
+vim.keymap.set("n", "<leader>df", ':DiffviewFileHistory %<CR>', { noremap = true, silent = true, desc = '[D]iffview [F]ile History' })
