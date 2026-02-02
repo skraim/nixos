@@ -1,6 +1,7 @@
 return {
   "nvim-tree/nvim-web-devicons",
   "mbbill/undotree",
+  "TheNoeTrevino/haunt.nvim",
   { "brenoprata10/nvim-highlight-colors", opts = {} },
   {
     "folke/lazydev.nvim",
@@ -55,10 +56,6 @@ return {
       file_types = { "markdown", "Avante" },
     },
     ft = { "markdown", "Avante" },
-  },
-  {
-    "stevearc/overseer.nvim",
-    opts = {},
   },
   {
     "bngarren/checkmate.nvim",

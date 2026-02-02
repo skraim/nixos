@@ -10,6 +10,7 @@ foreach line [split $states_output "\n"] {
 }
 
 set otp [exec pass otp $env(SNX_OTP_KEY)]
+set home $env(HOME)
 
 spawn snxctl connect
 
@@ -20,7 +21,7 @@ expect {
     -re "Server name: (\[^\r\n\]*)\r\n.*?Tunnel type: (\[^\r\n\]*)" {
         set server [string trim $expect_out(1,string)]
         set tunnel [string trim $expect_out(2,string)]
-        exec dunstify -t 2000 -a "SNX" -i "$HOME/.icons/custom/vpn-on.svg" "Connected" "Server: $server\nTunnel: $tunnel"
+        exec dunstify -t 2000 -a "SNX" -i "$home/.icons/custom/vpn-on.svg" "Connected" "Server: $server\nTunnel: $tunnel"
     }
     timeout {
         exec dunstify -t 2000 -u critical -a "SNX" "Failed to get connection details"
