@@ -4,7 +4,7 @@
     experimental-features = [ "nix-command" "flakes" ];
   };
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,32 +13,25 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    yazi.url = "github:sxyazi/yazi";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-    awww.url = "git+https://codeberg.org/LGFae/awww";
-    niri-flake = {
-      url = "github:sodiboo/niri-flake";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    matugen.url = "github:/InioX/Matugen";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, nix-index-database, ... } @ inputs:
     {
-      nixpkgs.overlays = [ inputs.niri-flake.overlays.niri ];
-      programs.niri.package = nixpkgs.niri-unstable;
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./configuration.nix
+            nix-index-database.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

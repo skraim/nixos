@@ -47,7 +47,7 @@
           "man"
           "sleep"
           "yazi"
-          "y"
+          "yy"
           "nvim"
           "lazygit"
           "lg"
@@ -56,19 +56,12 @@
           "gpg"
           "bluetui"
           "bc"
+          "btop"
         ];
+        AUTO_NOTIFY_EXPIRE_TIME = "5000";
+        AUTO_NOTIFY_CANCEL_ON_SIGINT = "0";
       };
       syntaxHighlighting.enable = true;
-      siteFunctions = {
-        y = ''
-          local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-          yazi "$@" --cwd-file="$tmp"
-          if cwd="$(command \cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-            builtin cd -- "$cwd"
-          fi
-          rm -f -- "$tmp"
-        '';
-      };
       setOptions = [
         "GLOB_DOTS"
         "HIST_REDUCE_BLANKS"
@@ -134,11 +127,8 @@
             bindkey '^[[1;5A' beginning-of-line
             bindkey '^[[1;5B' end-of-line
           '';
-          zshAfter = lib.mkOrder 1500 ''
-            (\cat ~/.cache/wal/sequences &)
-          '';
         in
-        lib.mkMerge [ zshKeybinds zshAfter ];
+        lib.mkMerge [ zshKeybinds ];
     };
     fzf = {
       enableZshIntegration = true;

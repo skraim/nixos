@@ -1,23 +1,24 @@
 local dap_view = require('dap-view')
 dap_view.setup({
-    winbar = {
-        sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
-        custom_sections = {},
-        controls = {
-            enabled = true,
-        },
+  winbar = {
+    sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
+    custom_sections = {},
+    controls = {
+      enabled = true,
     },
+  },
   windows = {
     terminal = {
       hide = { "java" },
     },
   },
-    auto_toggle = true,
+  auto_toggle = true,
 });
 
 vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapBreakpoint" })
 vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DapBreakpointCondition" })
-vim.fn.sign_define("DapStopped", { text = "", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "DapStoppedLine"})
+vim.fn.sign_define("DapStopped",
+  { text = "", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "DapStoppedLine" })
 vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DapBreakpointRejected" })
 
 local dap = require('dap')
@@ -113,13 +114,13 @@ local function clear_debug_keymaps()
 end
 
 map('<F8>', function() dap.continue() end, 'Run/Continue')
-map('<Leader>b', function() dap.toggle_breakpoint() end, "[B]reakpoint")
+map('<Leader>b', function() dap.toggle_breakpoint() end, "Toggle [B]reakpoint")
 map('<leader>B', function()
   local input = vim.fn.input 'Condition: '
   if input ~= '' then
     vim.cmd(string.format("lua require('dap').set_breakpoint('%s')", input))
   end
-end, 'Set conditional [B]reakpoint')
+end, 'Conditional [B]reakpoint')
 
 dap.listeners.after.event_initialized["debug_keymaps"] = function() set_debug_keymaps() end
 dap.listeners.before.event_terminated["debug_keymaps"] = function() clear_debug_keymaps() end

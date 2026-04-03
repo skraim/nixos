@@ -21,14 +21,11 @@ with lib; let
 in
   {
   nixpkgs = {
-    overlays = [
-      inputs.yazi.overlays.default
-    ];
     config = {
       allowUnfree = true;
       permittedInsecurePackages = [
-        "librewolf-bin-146.0.1-1"
-        "librewolf-bin-unwrapped-146.0.1-1"
+        # "librewolf-bin-146.0.1-1"
+        # "librewolf-bin-unwrapped-146.0.1-1"
         "openssl-1.1.1w"
       ];
     };
@@ -36,7 +33,6 @@ in
 
   imports = [
     ./hardware-configuration.nix
-    ./modules/wl-clip/wl-clipboard-master.nix
   ];
 
   boot = {
@@ -76,8 +72,11 @@ in
   environment.variables.NIXOS_FLAKE_PATH = builtins.getEnv "PWD";
 
   virtualisation = {
-    libvirtd.enable = true;
     spiceUSBRedirection.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu.runAsRoot = false;
+    };
   };
 
   networking = {
@@ -95,14 +94,14 @@ in
   };
 
   programs = {
+    nix-index-database.comma.enable = true;
+    steam.enable = true;
     virt-manager.enable = true;
     nm-applet.enable = true;
     ydotool.enable = true;
     zsh.enable = true;
     hyprland.enable = true;
-    wl-clipboard-master.enable = true;
     thunar.enable = true;
-    niri.enable = true;
     npm = {
       enable = true;
       package = pkgs.nodejs_20;
@@ -158,6 +157,8 @@ in
     gnome.gnome-keyring.enable = true;
     xl2tpd.enable = true;
     libinput.enable = true;
+    power-profiles-daemon.enable = true;
+    tailscale.enable = true;
     strongswan = {
       enable = true;
       secrets = [
@@ -228,13 +229,15 @@ in
     users.artem = {
       isNormalUser = true;
       description = "Artem";
-      extraGroups = [ "networkmanager" "wheel" "ydotool" "libvirtd" ];
+      extraGroups = [ "networkmanager" "wheel" "ydotool" "libvirtd" "kvm" ];
     };
   };
 
   fonts.packages = [
     pkgs.google-fonts
   ];
+
+  qt.enable = true;
 
   environment = {
     etc = {
@@ -282,7 +285,6 @@ in
       git
       udiskie
       imagemagick
-      # gnome-keyring
       cargo
       libnotify
       networkmanagerapplet
@@ -292,6 +294,8 @@ in
       ripgrep
       fd
       qtcreator
+      inputs.matugen.packages.${system}.default
+      virt-viewer
     ];
     pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
   };
@@ -301,6 +305,10 @@ in
   security = {
     rtkit.enable = true;
     polkit.enable = true;
+    sudo.extraConfig = ''
+      Defaults pwfeedback
+      Defaults timestamp_timeout = 300
+    '';
     pam.services = {
       sddm = {
         gnupg = {
@@ -330,21 +338,28 @@ in
     };
   };
 
-  systemd.services.snx-rs = {
-    description = "SNX-RS Service";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.snx-rs}/bin/snx-rs -m command";
-      User = "root";
-      Restart = "on-failure";
+  systemd.services = {
+    snx-rs = {
+      description = "SNX-RS Service";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.snx-rs}/bin/snx-rs -m command";
+        User = "root";
+        Restart = "on-failure";
+      };
+      path = [pkgs.iproute2 pkgs.kmod];
     };
-    path = [pkgs.iproute2 pkgs.kmod];
   };
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
-    pkgs.nodejs_20
+    nodejs_20
+    brotli
+    unixodbc
+    zstd
+    glib
+    stdenv.cc.cc
   ];
 }

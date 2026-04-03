@@ -1,17 +1,17 @@
 require('gitsigns').setup({
   on_attach = function(bufnr)
-    local function map(mode, lhs, rhs, opts)
-      opts = vim.tbl_extend('force', { noremap = true, silent = true }, opts or {})
+    local function map(mode, lhs, rhs, desc)
+      local opts = { noremap = true, silent = true, desc = 'Git: ' .. desc }
       vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
     end
 
-    map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>')
-    map('v', '<leader>hs', ':Gitsigns stage_hunk<CR>')
-    map('n', '<leader>hr', ':Gitsigns reset_hunk<CR>')
-    map('v', '<leader>hr', ':Gitsigns reset_hunk<CR>')
-    map('n', '<leader>hu', ':Gitsigns undo_stage_hunk<CR>')
-    map('n', '<leader>hp', ':Gitsigns preview_hunk<CR>')
-    map('n', '<leader>gb', ':Gitsigns blame<CR>')
+    map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>', '[H]unk [S]tage')
+    map('v', '<leader>hs', ':Gitsigns stage_hunk<CR>', '[H]unk [S]tage')
+    map('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', '[H]unk [R]eset')
+    map('v', '<leader>hr', ':Gitsigns reset_hunk<CR>', '[H]unk [R]eset')
+    map('n', '<leader>hu', ':Gitsigns undo_stage_hunk<CR>', '[H]unk [U]ndo stage')
+    map('n', '<leader>hp', ':Gitsigns preview_hunk<CR>', '[H]unk [P]review')
+    map('n', '<leader>gb', ':Gitsigns blame<CR>', '[B]lame')
   end
 })
 

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, nixpkgs, yazi, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -13,8 +13,7 @@
     ../git
     ../tmux
     ../lazygit
-    ../pywal
-    ../kanshi
+    ../matugen
   ];
 
   gtk = {
@@ -46,7 +45,6 @@
     };
 
     librewolf = {
-      package = pkgs.librewolf-bin;
       enable = true;
       settings = {
         "middlemouse.paste" = false;
@@ -69,8 +67,8 @@
     less = {
       enable = true;
       config = ''
-      h forw-line
-      a back-line
+        h forw-line
+        a back-line
       '';
     };
 
@@ -119,28 +117,29 @@
       jq
       swappy
       material-symbols
-      dunst
       snx-rs
       jetbrains.idea-oss
       qbittorrent
-      rofi
+      wl-clipboard
       telegram-desktop
       slack
       xwayland-satellite
       bibata-cursors
       slurp
       libreoffice
-      inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.awww
+      sox
       (import ../chromium-profiles/general.nix { inherit pkgs; })
       (import ../chromium-profiles/dl.nix { inherit pkgs; })
       grim
+      cava
       wl-screenrec
       vlc
+      ttyper
+      pamtester
       zbar
       bluetui
       nwg-look
       gsettings-desktop-schemas
-      cliphist
       maven
       playerctl
       loupe
@@ -151,13 +150,13 @@
   xdg = {
     mimeApps = {
       enable = true;
-
       defaultApplications = {
         "text/html" = "librewolf.desktop";
         "x-scheme-handler/http" = "librewolf.desktop";
         "x-scheme-handler/https" = "librewolf.desktop";
         "x-scheme-handler/about" = "librewolf.desktop";
         "x-scheme-handler/unknown" = "librewolf.desktop";
+        "application/pdf" = "chromium-browser.desktop";
         "image/png" = "org.gnome.Loupe.desktop";
         "image/gif" = "org.gnome.Loupe.desktop";
         "image/jpeg" = "org.gnome.Loupe.desktop";
@@ -167,14 +166,9 @@
     portal = {
       enable = true;
       extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-gnome
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
+        xdg-desktop-portal-hyprland
       ];
       config = {
-        common = {
-          default = [ "gtk" ];
-        };
         hyprland = {
           default = [
             "hyprland"
@@ -182,19 +176,15 @@
           "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
           "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
         };
-        niri = {
-          default = [
-            "gtk"
-            "gnome"
-          ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
-        };
       };
     };
   };
 
   services = {
+    cliphist = {
+      enable = true;
+      clipboardPackage = pkgs.wl-clipboard;
+    };
     gpg-agent = {
       enable = true;
       enableBashIntegration = true;

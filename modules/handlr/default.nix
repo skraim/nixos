@@ -6,9 +6,6 @@
   ];
 
   xdg.configFile."handlr/handlr.toml".text = ''
-      enable_selector = true
-      selector = "dmenu-wl"
-
       [[handlers]]
       exec = "chromium --profile-directory=\"Profile 1\" %u"
       regexes = [
@@ -23,6 +20,7 @@
         '(https://)?(.*\.)?atlassian\.net/*.',
         '(https://)?(.*\.)?azure\.com/*.',
         '(https://)?(.*\.)?clickup\.com/*.',
+        '(https://)?(.*\.)?slack\.com/*.',
         '${builtins.readFile config.sops.secrets.link_regex_sc.path}',
         '${builtins.readFile config.sops.secrets.link_regex_lw.path}',
       ]

@@ -13,6 +13,8 @@ vim.cmd [[
     highlight TroubleIndentWs ctermbg=NONE guibg=NONE
     highlight Comment ctermbg=NONE guibg=NONE
     highlight FloatBorder ctermbg=NONE guibg=NONE guifg=#82AAFF
+    highlight SnacksPickerBorder ctermbg=NONE guibg=NONE guifg=#82AAFF
+    highlight SnacksPickerPreviewTitle ctermbg=NONE guibg=NONE guifg=#C3CCDC
     highlight BlinkCmpDocBorder guibg=NONE guifg=#82AAFF
     highlight BlinkCmpDocSeparator guibg=NONE guifg=#82AAFF
     highlight BlinkCmpSignatureHelpBorder guibg=NONE guifg=#82AAFF
@@ -23,4 +25,3 @@ vim.cmd [[
     highlight DapStopped guifg=#61afef guibg=#1f2d1f
     highlight DapStoppedLine guibg=#1f2d1f
 ]]
-

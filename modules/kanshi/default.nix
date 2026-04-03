@@ -1,25 +1,32 @@
 {
   services.kanshi = {
     enable = true;
-    profiles = {
-      undocked = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-          }
-        ];
-      };
-      docked = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-          }
-          {
-            criteria = "*";
-          }
-        ];
-        exec = [ "$HOME/scripts/post-pywal.sh" ];
-      };
-    };
+    settings = [
+      {
+        profile = {
+          name = "undocked";
+          outputs =  [
+            {
+              criteria = "eDP-1";
+            }
+          ];
+          exec = [ "$HOME/scripts/post-pywal.sh" ];
+        };
+      }
+      {
+        profile = {
+          name = "docked";
+          outputs = [
+            {
+              criteria = "eDP-1";
+            }
+            {
+              criteria = "*";
+            }
+          ];
+          exec = [ "$HOME/scripts/post-pywal.sh" ];
+        };
+      }
+    ];
   };
 }

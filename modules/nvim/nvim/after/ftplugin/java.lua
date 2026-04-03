@@ -90,14 +90,10 @@ config["on_attach"] = function(client, bufnr)
   require("jdtls.dap").setup_dap_main_class_configs()
   jdtls.setup_dap({ hotcodereplace = "auto" })
   local map = function(mode, lhs, rhs, desc)
-    if desc then
-      desc = desc
-    end
-
-    vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc, buffer = bufnr, noremap = true })
+    vim.keymap.set(mode, lhs, rhs, { silent = true, desc = '[T]est: ' .. desc, buffer = bufnr, noremap = true })
   end
-  map("n", "<leader>tm", jdtls.test_nearest_method, "Test Method")
-  map("n", "<leader>tc", jdtls.test_class, "Test Class")
+  map("n", "<leader>tm", jdtls.test_nearest_method, "[M]ethod")
+  map("n", "<leader>tc", jdtls.test_class, "[C]lass")
 end
 
 require('jdtls').start_or_attach(config)

@@ -21,4 +21,7 @@ selection=$(echo "$devices" | dmenu-wl)
 
 dev=$(echo "$selection" | awk '{print $1}')
 
-umount "$dev" || notify-send -a Select_unmount "Failed to unmount $dev."
+while ! umount "$dev"; do
+    notify-send -a Select_unmount "Device busy. Retrying in 1min..."
+    sleep 60
+done

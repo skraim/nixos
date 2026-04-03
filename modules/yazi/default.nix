@@ -199,7 +199,7 @@ in
           }
 
           # Tasks
-          { on = "w"; run = "tasks_show"; desc = "Show task manager"; }
+          { on = "w"; run = "tasks:show"; desc = "Show task manager"; }
 
           # Help
           { on = "~"; run = "help"; desc = "Open help"; }
