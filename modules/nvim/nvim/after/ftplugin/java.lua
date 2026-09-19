@@ -87,8 +87,10 @@ local config = {
 
 config["on_attach"] = function(client, bufnr)
   local _, _ = pcall(vim.lsp.codelens.refresh)
-  require("jdtls.dap").setup_dap_main_class_configs()
   jdtls.setup_dap({ hotcodereplace = "auto" })
+  vim.defer_fn(function()
+    require("jdtls.dap").setup_dap_main_class_configs()
+  end, 1000)
   local map = function(mode, lhs, rhs, desc)
     vim.keymap.set(mode, lhs, rhs, { silent = true, desc = '[T]est: ' .. desc, buffer = bufnr, noremap = true })
   end

@@ -18,7 +18,12 @@
       enable_audio_bell = "no";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
-      include = "~/.config/kitty/themes/Matugen.conf";
+      auto_reload_config = -1;
     };
+    extraConfig = ''
+      include ~/.config/kitty/current-theme.conf
+      include ~/.config/kitty/background-color.conf
+      cursor                   #31748f
+    '';
   };
 }

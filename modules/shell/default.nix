@@ -56,7 +56,11 @@
           "gpg"
           "bluetui"
           "bc"
+          "claude"
+          "codex"
           "btop"
+          "rmpc"
+          "systemctl"
         ];
         AUTO_NOTIFY_EXPIRE_TIME = "5000";
         AUTO_NOTIFY_CANCEL_ON_SIGINT = "0";
@@ -127,8 +131,11 @@
             bindkey '^[[1;5A' beginning-of-line
             bindkey '^[[1;5B' end-of-line
           '';
+          direnvHook = lib.mkOrder 1000 ''
+            eval "$(direnv hook zsh)"
+          '';
         in
-        lib.mkMerge [ zshKeybinds ];
+        lib.mkMerge [ zshKeybinds direnvHook ];
     };
     fzf = {
       enableZshIntegration = true;

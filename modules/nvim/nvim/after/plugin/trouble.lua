@@ -6,8 +6,3 @@ end
 map("<leader>xx", "<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>", "Diagnostics (buffer)")
 map("<leader>xX", "<cmd>Trouble diagnostics toggle focus=true<cr>", "Diagnostics (workspace)")
 
-require("trouble").setup {
-  keys = {
-    ["<c-x>"] = "jump_split"
-  }
-}

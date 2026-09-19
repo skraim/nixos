@@ -14,7 +14,7 @@ require('sidekick').setup({
         return haunt_sk.get_locations()
       end,
       haunt_buffer = function()
-        return haunt_sk.get_locations({ name = "claude", current_buffer = true })
+        return haunt_sk.get_locations({ name = "codex", current_buffer = true })
       end,
     },
   }
@@ -26,19 +26,19 @@ local map = function(keys, func, desc, mode)
 end
 
 map("<leader>aa", function()
-  require("sidekick.cli").toggle({ name = "claude", focus = true })
+  require("sidekick.cli").toggle({ name = "codex", focus = true })
 end, "Toggle [A]I")
 
 map("<leader>at", function()
-  require("sidekick.cli").send({ name = "claude", focus = true, msg = "{this}" })
+  require("sidekick.cli").send({ name = "codex", focus = true, msg = "{this}" })
 end, "Send [T]his", { "x", "n" })
 
 map("<leader>af", function()
-  require("sidekick.cli").send({ name = "claude", focus = true, msg = "{file}" })
+  require("sidekick.cli").send({ name = "codex", focus = true, msg = "{file}" })
 end, "Send [F]ile")
 
 map("<leader>av", function()
-  require("sidekick.cli").send({ name = "claude", focus = true, msg = "{selection}" })
+  require("sidekick.cli").send({ name = "codex", focus = true, msg = "{selection}" })
 end, "Send [V]isual Selection", "x")
 
 map("<leader>ap", function()

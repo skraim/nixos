@@ -10,7 +10,7 @@
               criteria = "eDP-1";
             }
           ];
-          exec = [ "$HOME/scripts/post-pywal.sh" ];
+          exec = [ "hyprctl keyword monitor \"eDP-1,1920x1200,0x0,1\"" ];
         };
       }
       {
@@ -24,7 +24,16 @@
               criteria = "*";
             }
           ];
-          exec = [ "$HOME/scripts/post-pywal.sh" ];
+          exec = [
+            ''
+              bash -c '
+                line=$(awww query | grep -m1 "eDP-1")
+                path=''${line##*image:}
+                hyprctl keyword monitor "eDP-1,1920x1200,0x0,1.2"
+                [ "$path" != "$line" ] && [ -n "$path" ] && awww img "''${path# }"
+              '
+            ''
+          ];
         };
       }
     ];

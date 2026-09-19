@@ -3,7 +3,7 @@ let
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "d1c8baab86100afb708694d22b13901b9f9baf00";
+    rev = "38efe09c270162f1b0dfb6020e021a5b64bdc735";
     hash = "sha256-52Zn6OSSsuNNAeqqZidjOvfCSB7qPqUeizYq/gO+UbE=";
   };
 in
@@ -13,7 +13,6 @@ in
     initLua = ./init.lua;
     plugins = {
       "folder-rules" = ./folder-rules.yazi;
-      "full-border" = "${yazi-plugins}/full-border.yazi";
       "smart-enter" = "${yazi-plugins}/smart-enter.yazi";
     };
     keymap = {
@@ -186,14 +185,14 @@ in
           {
             on = [ "B" "d" ];
             run = ''
-              shell 'wal --cols16 lighten -i $@ -n -o ~/scripts/post-pywal.sh' --confirm
+              shell 'matugen image $@ --source-color-index $((RANDOM % 2))' --confirm
             '';
             desc = "Set as a background (dark theme)";
           }
           {
             on = [ "B" "l" ];
             run = ''
-                shell 'wal -l -i $@ -n -o ~/scripts/post-pywal.sh' --confirm
+                shell 'matugen image $@ --source-color-index $((RANDOM % 2)) -m light' --confirm
             '';
             desc = "Set as a background (light theme)";
           }

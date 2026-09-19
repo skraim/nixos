@@ -33,6 +33,7 @@ expect {
         set server [string trim $expect_out(1,string)]
         set tunnel [string trim $expect_out(2,string)]
         exec notify-send -t 3000 -a "SNX" -i "$home/.icons/custom/vpn-on.svg" "Connected" "Server: $server\nTunnel: $tunnel"
+        puts {vpn_status {"name":"SNX","state":"connected"}}
     }
     timeout {
         exec notify-send -t 3000 -u critical -a "SNX" "Failed to get connection details"

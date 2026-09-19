@@ -4,7 +4,7 @@
     experimental-features = [ "nix-command" "flakes" ];
   };
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,10 +21,18 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    matugen.url = "github:/InioX/Matugen";
+    awww.url = "git+https://codeberg.org/LGFae/awww";
+    matugen = {
+      url = "github:/InioX/Matugen";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    openlogi = {
+      url = "github:AprilNEA/OpenLogi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, nix-index-database, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, nix-index-database, openlogi, ... } @ inputs:
     {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
@@ -44,6 +52,7 @@
               ];
             }
             sops-nix.nixosModules.sops
+            openlogi.nixosModules.default
           ];
           specialArgs = { inherit inputs; };
         };

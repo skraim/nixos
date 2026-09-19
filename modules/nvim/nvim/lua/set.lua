@@ -51,3 +51,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank()
   end,
 })
+
+local window_binding_group = vim.api.nvim_create_augroup("disable-window-bindings", { clear = true })
+
+local function disable_window_bindings()
+  vim.opt_local.scrollbind = false
+  vim.opt_local.cursorbind = false
+end
+
+vim.api.nvim_create_autocmd({ "VimEnter", "WinNew", "WinEnter", "BufWinEnter" }, {
+  desc = "Prevent splits from inheriting synchronized scrolling",
+  group = window_binding_group,
+  callback = disable_window_bindings,
+})
+
+vim.api.nvim_create_autocmd("OptionSet", {
+  desc = "Keep synchronized scrolling disabled",
+  group = window_binding_group,
+  pattern = { "scrollbind", "cursorbind" },
+  callback = function()
+    if vim.v.option_new == "1" then
+      vim.schedule(disable_window_bindings)
+    end
+  end,
+})

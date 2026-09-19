@@ -28,8 +28,6 @@ map('<leader>p', '"_dP', "[P]aste without yanking", 'v')
 map('<leader>p', '"+p', "[P]aste from system clipboard")
 map("<C-p>", vim.cmd.cp, "[P]revious quickfix item")
 map("<C-n>", vim.cmd.cn, "[N]ext quickfix item")
-map('<leader>o', 'o<Esc>', "Insert line below")
-map('<leader>O', 'O<Esc>', "Insert line above")
 
 if kb_layout == 'qwerty' then
   map('<leader>y', '"+y', "[Y]ank to system clipboard", { 'n', 'v' })

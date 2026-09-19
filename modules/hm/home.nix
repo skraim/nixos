@@ -14,19 +14,21 @@
     ../tmux
     ../lazygit
     ../matugen
+    ../kanshi
   ];
 
+  #done
   gtk = {
     enable = true;
 
     theme = {
-      package = pkgs.nordic;
-      name = "Nordic";
+      package = pkgs.catppuccin-gtk;
+      name = "catppuccin-frappe-blue-standard";
     };
 
     iconTheme = {
-      package = pkgs.nordzy-icon-theme;
-      name = "Nordzy";
+      package = pkgs.rose-pine-icon-theme;
+      name = "rose-pine";
     };
   };
 
@@ -35,6 +37,7 @@
     java.enable = true;
     claude-code.enable = true;
     gpg.enable = true;
+    codex.enable = true;
 
     btop = {
       enable = true;
@@ -46,6 +49,7 @@
 
     librewolf = {
       enable = true;
+      package = pkgs.librewolf-bin;
       settings = {
         "middlemouse.paste" = false;
         "general.autoScroll" = true;
@@ -90,7 +94,8 @@
   home = {
     sessionVariables = {
       ANTHROPIC_API_KEY = builtins.readFile config.sops.secrets.anthropic_api_key.path;
-      GNOME_KEYRING_CONTROL = "$XDG_RUNTIME_DIR/keyring";
+      # GNOME_KEYRING_CONTROL = "$XDG_RUNTIME_DIR/keyring";
+      NH_FLAKE = "$HOME/nixos";
     };
     sessionVariablesExtra = ''
       export PATH="$HOME/scripts:$HOME/.npm-global/bin:$PATH"
@@ -108,7 +113,6 @@
       spotify
       freecad
       tldr
-      zapzap
       swaybg
       teams-for-linux
       bc
@@ -116,9 +120,10 @@
       nerd-fonts.profont
       jq
       swappy
+      satty
       material-symbols
       snx-rs
-      jetbrains.idea-oss
+      # jetbrains.idea-oss
       qbittorrent
       wl-clipboard
       telegram-desktop
@@ -132,9 +137,17 @@
       (import ../chromium-profiles/dl.nix { inherit pkgs; })
       grim
       cava
+      util-linux.lib
+      inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.awww
+      discord
+      kitty-themes
+      direnv
       wl-screenrec
       vlc
+      opencode
+      waybar
       ttyper
+      localsend
       pamtester
       zbar
       bluetui
@@ -142,16 +155,32 @@
       gsettings-desktop-schemas
       maven
       playerctl
+      herdr
+      spacenav-cube-example
+      rmpc
       loupe
+      vscodium
+      # bambu-studio
+      prusa-slicer
       orca-slicer
+      # (orca-slicer.override {
+      #   glew = glew.override {
+      #     enableEGL = false;
+      #   };
+      # })
     ];
   };
 
   xdg = {
+    configFile = {
+      "gtk-4.0/gtk.css".force = true;
+      "gtk-4.0/settings.ini".force = true;
+    };
     mimeApps = {
       enable = true;
       defaultApplications = {
         "text/html" = "librewolf.desktop";
+        "text/x-patch" = "nvim";
         "x-scheme-handler/http" = "librewolf.desktop";
         "x-scheme-handler/https" = "librewolf.desktop";
         "x-scheme-handler/about" = "librewolf.desktop";
@@ -190,9 +219,32 @@
       enableBashIntegration = true;
       extraConfig = ''
         allow-preset-passphrase
-      '';
+        '';
       maxCacheTtl = 86400;
       pinentry.package = pkgs.pinentry-qt;
+    };
+    mpd = {
+      enable = true;
+      musicDirectory = "${config.home.homeDirectory}/music";
+      dataDir = "${config.home.homeDirectory}/.local/state/mpd";
+      extraConfig = ''
+        auto_update "yes"
+
+        audio_output {
+           type   "fifo"
+           name   "my_fifo"
+           path   "/tmp/mpd.fifo"
+           format "44100:16:2"
+        }
+
+        audio_output {
+            type            "pipewire"
+            name            "PipeWire output"
+        }
+      '';
+    };
+    mpdris2 = {
+      enable = true;
     };
   };
 
@@ -221,6 +273,10 @@
       "proj_dir_dlaem" = {};
       "proj_dir_sc" = {};
       "proj_dir_lw" = {};
+      smb_nas_credentials = {
+        path = "${config.home.homeDirectory}/.config/smb-nas-credentials";
+        mode = "0400";
+      };
     };
   };
 }

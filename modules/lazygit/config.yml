@@ -77,13 +77,6 @@ statusPanelView: dashboard
 switchToFilesAfterStashPop: true
 switchToFilesAfterStashApply: true
 switchTabsWithPanelJumpKeys: false
-git:
-  pagers:
-    -
-      colorArg: always
-      pager: ""
-      useConfig: false
-      externalDiffCommand: ""
 commit:
 signOff: false
 autoWrapCommitMessage: true
@@ -173,7 +166,7 @@ keybinding:
     nextMatch: "n"
     prevMatch: "N"
     startSearch: /
-    optionMenu: <disabled>
+    optionMenu: "<f1>"
     optionMenu-alt1: '?'
     select: <space>
     goInto: <enter>
@@ -214,6 +207,7 @@ keybinding:
     increaseRenameSimilarityThreshold: )
     decreaseRenameSimilarityThreshold: (
     openDiffTool: <c-t>
+    newWorktree: w
   status:
     checkForUpdate: u
     recentRepos: <enter>
@@ -252,8 +246,6 @@ keybinding:
     setUpstream: u
     fetchRemote: f
     sortOrder: s
-  worktrees:
-    viewWorktreeOptions: w
   commits:
     squashDown: s
     renameCommit: r
@@ -271,7 +263,7 @@ keybinding:
     markCommitAsBaseForRebase: B
     tagCommit: T
     checkoutCommit: <space>
-    resetCherryPick: <c-R>
+    resetCherryPick: <c-r>
     copyCommitAttributeToClipboard: "l"
     openLogMenu: <c-l>
     openInBrowser: o

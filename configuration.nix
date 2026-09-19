@@ -1,5 +1,7 @@
 { inputs, config, pkgs, lib, ... }:
 with lib; let
+  homeDir = "/home/artem";
+
   sddm-astronaut = pkgs.sddm-astronaut.override {
     embeddedTheme = "hyprland_kath";
     themeConfig = {
@@ -24,9 +26,12 @@ in
     config = {
       allowUnfree = true;
       permittedInsecurePackages = [
+        # "idea-oss-2025.3.4"
+        # "librewolf-bin-151.0.1-2"
+        # "librewolf-bin-unwrapped-151.0.1-2"
         # "librewolf-bin-146.0.1-1"
         # "librewolf-bin-unwrapped-146.0.1-1"
-        "openssl-1.1.1w"
+        # "openssl-1.1.1w"
       ];
     };
   };
@@ -97,14 +102,18 @@ in
     nix-index-database.comma.enable = true;
     steam.enable = true;
     virt-manager.enable = true;
-    nm-applet.enable = true;
+    # nm-applet.enable = true;
     ydotool.enable = true;
     zsh.enable = true;
     hyprland.enable = true;
     thunar.enable = true;
+    openlogi.enable = true;
     npm = {
       enable = true;
-      package = pkgs.nodejs_20;
+      package = pkgs.nodejs_22;
+      npmrc = ''
+        min-release-age=7
+      '';
     };
   };
 
@@ -126,6 +135,7 @@ in
   };
 
   hardware = {
+    spacenavd.enable = true;
     enableRedistributableFirmware = true;
     graphics = {
       enable = true;
@@ -145,6 +155,7 @@ in
         };
         Policy = {
           AutoEnable = true;
+          ReconnectAttempts = 0;
         };
       };
     };
@@ -229,7 +240,8 @@ in
     users.artem = {
       isNormalUser = true;
       description = "Artem";
-      extraGroups = [ "networkmanager" "wheel" "ydotool" "libvirtd" "kvm" ];
+      extraGroups = [ "networkmanager" "wheel" "dialout" "ydotool" "libvirtd" "kvm" ];
+      initialPassword = "12345";
     };
   };
 
@@ -269,7 +281,8 @@ in
 
     shells = [ pkgs.zsh ];
     systemPackages = with pkgs; [
-      (python313.withPackages (ps: with ps; [ dbus-next ]))
+      cifs-utils
+      (python313.withPackages (ps: with ps; [ dbus-next pycryptodome ]))
       intel-compute-runtime
       brightnessctl
       expect
@@ -286,11 +299,13 @@ in
       udiskie
       imagemagick
       cargo
+      nh
       libnotify
       networkmanagerapplet
       sddm-astronaut
       cachix
       kitty
+      spnavcfg
       ripgrep
       fd
       qtcreator
@@ -298,6 +313,20 @@ in
       virt-viewer
     ];
     pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
+  };
+
+  fileSystems."${homeDir}/music/nas" = {
+    device = "//192.168.0.225/media/music";
+    fsType = "cifs";
+    options = [
+      "credentials=${homeDir}/.config/smb-nas-credentials"
+      "uid=1000"
+      "gid=100"
+      "vers=3.0"
+      "x-systemd.automount"
+      "noauto"
+      "_netdev"
+    ];
   };
 
   system.stateVersion = "25.05";
@@ -355,7 +384,7 @@ in
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
-    nodejs_20
+    nodejs_22
     brotli
     unixodbc
     zstd

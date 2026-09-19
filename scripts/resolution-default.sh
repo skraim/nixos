@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
-session="${DESKTOP_SESSION:-}"
+hyprctl eval '
+    hl.config({ misc = { disable_autoreload = false } })
+    hl.config({ cursor = { no_hardware_cursors = 2 } })
+    hl.monitor({ output="desc:Xiaomi Corporation Mi Monitor", mode="3440x1440@100Hz", position="1600x-50" })
+'
 
-case "$session" in
-  hyprland)
-    hyprctl keyword monitor desc:Xiaomi Corporation Mi Monitor,3440x1440@99.99Hz,1600x-50,auto
-    ;;
-  niri)
-    niri msg output "Xiaomi Corporation Mi Monitor Unknown" mode 3440x1440@100
-    ;;
-  *)
-    echo "Unsupported or unknown DESKTOP_SESSION: $session" >&2
-    ;;
-esac
+sleep 2;
+matugen image "$(find ~/Pictures/wallpapers -type f | shuf -n 1)" --source-color-index 0
